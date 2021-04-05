@@ -12,25 +12,24 @@ type CanvasCoords = {
 canvas.width = window.innerWidth
 canvas.height = window.innerWidth
 
-const letsFuckinGo = (coordinates: CanvasCoords[]) => {
+const render = (coordinates: CanvasCoords[]) => {
+    ctx.clearRect(0,0,canvas.width,canvas.height)
     coordinates.map(drawDot)
 
-    for (let i = 0; i < coordinates.length; i++) {
-        const dot1 = coordinates[i]
+    coordinates.forEach(dot1 => {
         ctx.beginPath()
         ctx.moveTo(dot1.x, dot1.y)
 
-        for (let j = 0; j < coordinates.length; j++) {
-            const dot2 = coordinates[j]
+        coordinates.forEach(dot2 => {
             const dist = Math.sqrt((dot1.x - dot2.x) ** 2 + (dot1.y - dot2.y) ** 2)
-
-            if (dist <= 200) {
+        
+            if (dist <= 150) {
                 ctx.lineTo(dot2.x, dot2.y)
                 ctx.strokeStyle = `rgba(${Math.random() * 256}, ${Math.random() * 256}, ${Math.random() * 256}, 1)`
                 ctx.stroke()
             }
-        }
-    }
+        })
+    })
 }
 
 const drawDot = (set: CanvasCoords) => {
@@ -58,8 +57,30 @@ const generateCoords = () => {
     return {x, y}
 }
 
-const coords = fillCoordsArray(10000)
+const move = (coordinates: CanvasCoords[]) => {
+    coordinates.forEach(dot => {
+        let vx: number = Math.floor(Math.random() * 60) - 30
+        let vy: number = Math.floor(Math.random() * 60) - 30
+        
+        if (dot.x < 0 || dot.x > canvas.width) {
+            vx = -vx
+        }
 
-console.log(coords)
+        if (dot.y < 0 || dot.y > canvas.height) {
+            vy = -vy
+        }
+        
+        dot.x += vx / 60;
+        dot.y += vy / 60;
+    })
+}
+
+const letsFuckinGo = (coordinates: CanvasCoords[]) => {
+    render(coordinates)
+    move(coordinates)
+    requestAnimationFrame(()=>letsFuckinGo(coordinates))
+}
+
+const coords = fillCoordsArray(500)
 
 letsFuckinGo(coords)
