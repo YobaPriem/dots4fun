@@ -65,9 +65,6 @@ let mouse: CursorDot = {
     t: 0 
 }
 
-// canvas.width = document.body.clientWidth
-// canvas.height = document.body.clientHeight
-
 canvas.width = window.innerWidth
 canvas.height = window.innerHeight
 
