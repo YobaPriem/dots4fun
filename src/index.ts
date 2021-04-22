@@ -3,7 +3,6 @@ import * as dat from 'dat.gui'
 const gui = new dat.GUI()
 const canvas = <HTMLCanvasElement>document.getElementById('app')
 const ctx = canvas.getContext('2d')
-
 interface Props {
     dotsNum: number,
     isRepel: boolean,
